@@ -13,3 +13,4 @@ jobs:
       - run: pip install -r requirements.txt
       - run: python -m compileall -q app
       - run: python -c "import yaml; c=yaml.safe_load(open('config/racks.yaml')); assert all(len(r['locations']) == r['rows'] * r['columns'] for r in c['racks'])"
+      - run: python -m unittest discover -s tests -v
