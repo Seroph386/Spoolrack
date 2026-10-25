@@ -7,6 +7,8 @@ import yaml
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 
+from app.colors import filament_background
+
 app = FastAPI(title="Spoolrack")
 SPOOLMAN_URL = os.environ.get("SPOOLMAN_URL", "http://spoolman:8000").rstrip("/")
 CONFIG_PATH = Path(os.environ.get("RACK_CONFIG", "/app/config/racks.yaml"))
@@ -65,10 +67,8 @@ async def dashboard():
             dots = []
             for spool in matched:
                 filament = spool.get("filament") or {}
-                color = str(filament.get("color_hex") or "888888").lstrip("#")
-                if len(color) not in (3, 6) or any(c not in "0123456789abcdefABCDEF" for c in color):
-                    color = "888888"
-                dots.append(f'<span class="dot" style="background:#{color}"></span>')
+                background = filament_background(filament)
+                dots.append(f'<span class="dot" style="background:{background}"></span>')
             cells.append(f'<article><strong>{escape(str(loc))}</strong><span>{len(matched)}/{capacity}</span><div class="dots">{"".join(dots)}</div></article>')
         sections.append(f'<section><h2>{escape(str(rack["name"]))}</h2><div class="grid" style="--cols:{int(rack["columns"])}">{"".join(cells)}</div></section>')
     return f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="refresh" content="30"><title>Spoolrack</title><style>
