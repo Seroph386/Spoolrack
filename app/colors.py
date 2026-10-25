@@ -17,6 +17,18 @@ def _css_hex(value):
     return f"#{hex_code}"
 
 
+
+def filament_color_codes(filament):
+    """Return the validated hexadecimal colors Spoolman provides."""
+    raw = filament.get("multi_color_hexes")
+    if isinstance(raw, str):
+        colors = [color for item in raw.split(",") if (color := _css_hex(item))]
+        if colors:
+            return colors
+    single = _css_hex(filament.get("color_hex"))
+    return [single] if single else []
+
+
 def filament_background(filament):
     """Build an inline CSS background for a Spoolman filament.
 
