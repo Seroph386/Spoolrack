@@ -1,0 +1,22 @@
+racks:
+  - id: main
+    name: Main Filament Rack
+    columns: 3
+    rows: 5
+    default_capacity: 4
+    locations:
+      - F-001
+      - F-002
+      - F-003
+      - F-004
+      - F-005
+      - F-006
+      - F-007
+      - F-008
+      - F-009
+      - F-010
+      - F-011
+      - F-012
+      - F-013
+      - F-014
+      - F-015

@@ -1,0 +1,12 @@
+services:
+  spoolrack:
+    build: .
+    restart: unless-stopped
+    ports:
+      - '8020:8080'
+    environment:
+      SPOOLMAN_URL: http://spoolman:8000
+    volumes:
+      - ./config:/app/config:ro
+    depends_on:
+      - spoolman
