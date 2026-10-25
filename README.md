@@ -13,10 +13,13 @@ Spoolman remains the source of truth for inventory; Spoolrack does not modify fi
 
 ## Docker images (GitHub Container Registry)
 
-The [container-publish workflow](.github/workflows/container-publish.yaml) checks pull requests against `main` by building the image without publishing it. After a merge (a push to `main`), it builds and publishes a multi-architecture Docker image for `linux/amd64` and `linux/arm64` to:
+The [container-publish workflow](.github/workflows/container-publish.yaml) checks pull requests against `main` by building the image without publishing it. Every pushed branch builds and publishes a multi-architecture Docker image for `linux/amd64` and `linux/arm64` to GitHub Container Registry. Only a push to `main` sets the `latest` tag:
 
-- `ghcr.io/seroph386/spoolrack:latest`
-- `ghcr.io/seroph386/spoolrack:sha-<short-commit-sha>`
+- **Main only:** `ghcr.io/seroph386/spoolrack:latest`
+- **Every branch:** `ghcr.io/seroph386/spoolrack:<branch-name>` (slashes are normalized to dashes)
+- **Every branch:** `ghcr.io/seroph386/spoolrack:sha-<short-commit-sha>`
+
+For example, a push to `feat/initial-dashboard` creates `ghcr.io/seroph386/spoolrack:feat-initial-dashboard` and a commit-specific `sha-...` tag, but **never changes `latest`**.
 
 It can also be manually started from **Actions → Build and publish Docker image → Run workflow** on `main`.
 
