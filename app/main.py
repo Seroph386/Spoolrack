@@ -68,7 +68,11 @@ async def dashboard():
             for spool in matched:
                 filament = spool.get("filament") or {}
                 background = filament_background(filament)
-                dots.append(f'<span class="dot" style="background:{background}"></span>')
+                name = escape(str(filament.get("name") or "Unnamed filament"), quote=True)
+                dots.append(
+                    f'<span class="dot" role="img" tabindex="0" '
+                    f'aria-label="{name}" title="{name}" style="background:{background}"></span>'
+                )
             cells.append(f'<article><strong>{escape(str(loc))}</strong><span>{len(matched)}/{capacity}</span><div class="dots">{"".join(dots)}</div></article>')
         sections.append(f'<section><h2>{escape(str(rack["name"]))}</h2><div class="grid" style="--cols:{int(rack["columns"])}">{"".join(cells)}</div></section>')
     return f"""<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="refresh" content="30"><title>Spoolrack</title><style>
