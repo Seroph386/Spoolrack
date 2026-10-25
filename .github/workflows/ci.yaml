@@ -14,3 +14,15 @@ jobs:
       - run: python -m compileall -q app
       - run: python -c "import yaml; c=yaml.safe_load(open('config/racks.yaml')); assert all(len(r['locations']) == r['rows'] * r['columns'] for r in c['racks'])"
       - run: python -m unittest discover -s tests -v
+
+  browser:
+    name: Responsive browser interaction
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt 'playwright>=1.45,<2'
+      - run: python -m playwright install --with-deps chromium
+      - run: PYTHONPATH=. python tests/browser_smoke.py
